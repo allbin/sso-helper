@@ -1,11 +1,11 @@
 import JWT from './jwt';
 export interface SSOOptions {
-    login_uri: string;
-    token_provider_uri: string;
-    renewal_check_interval: number;
-    jwt_acquire_callback: null | ((jwt: JWT) => void);
-    jwt_renew_callback: null | ((jwt: JWT) => void);
-    jwt_release_callback: null | ((was_logout?: boolean) => void);
+    login_uri?: string;
+    token_provider_uri?: string;
+    renewal_check_interval?: number;
+    jwt_acquire_callback?: (jwt: JWT) => void;
+    jwt_renew_callback?: (jwt: JWT) => void;
+    jwt_release_callback?: (was_logout?: boolean) => void;
 }
 export interface SSO {
     init: () => Promise<void>;

@@ -7,12 +7,21 @@ import { InvalidCredentialsError, InvalidTokenError } from './errors';
 import type { AxiosError } from 'axios';
 
 export interface SSOOptions {
+  login_uri?: string;
+  token_provider_uri?: string;
+  renewal_check_interval?: number;
+  jwt_acquire_callback?: (jwt: JWT) => void;
+  jwt_renew_callback?: (jwt: JWT) => void;
+  jwt_release_callback?: (was_logout?: boolean) => void;
+}
+
+interface SSOOptionsSettled {
   login_uri: string;
   token_provider_uri: string;
   renewal_check_interval: number;
-  jwt_acquire_callback: null | ((jwt: JWT) => void);
-  jwt_renew_callback: null | ((jwt: JWT) => void);
-  jwt_release_callback: null | ((was_logout?: boolean) => void);
+  jwt_acquire_callback?: (jwt: JWT) => void;
+  jwt_renew_callback?: (jwt: JWT) => void;
+  jwt_release_callback?: (was_logout?: boolean) => void;
 }
 
 export interface SSO {
@@ -51,15 +60,15 @@ const SSO = (service: string, options: SSOOptions): SSO => {
     login_uri: 'https://login.allbin.se',
     token_provider_uri: 'https://sso.allbin.se',
     renewal_check_interval: 30,
-    jwt_acquire_callback: null,
-    jwt_renew_callback: null,
-    jwt_release_callback: null,
+    jwt_acquire_callback: undefined,
+    jwt_renew_callback: undefined,
+    jwt_release_callback: undefined,
   };
   const data: JWTContext = {
     jwt: null,
     interval: null,
   };
-  const opts = { ...defaults, ...options };
+  const opts = { ...defaults, ...options } as SSOOptionsSettled;
 
   const startRenewInterval = (): void => {
     clearRenewInterval();
