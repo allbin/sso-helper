@@ -1,1 +1,3 @@
-export * from './sso';
+import SSO from './sso';
+
+export default SSO;
