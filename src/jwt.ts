@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import * as jose from 'jose';
 
 interface Claims {
   exp: number;
@@ -23,7 +23,8 @@ interface JWT {
 }
 
 const JWT = (raw_token: string): ReadOnly<JWT> => {
-  const claims = jwt.decode(raw_token) as Claims;
+  const claims = jose.decodeJwt(raw_token) as jose.JWTPayload & Claims;
+
   return {
     raw_token,
     claims,
