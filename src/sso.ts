@@ -197,7 +197,7 @@ const SSO = (service: string, options: SSOOptions): SSO => {
 
     try {
       const raw_token = await renewToken();
-      data.jwt = JWT(raw_token);
+      setJWTFromRaw(raw_token);
       opts.jwt_renew_callback && opts.jwt_renew_callback(data.jwt);
     } catch (e) {
       const err = e as AxiosError;
